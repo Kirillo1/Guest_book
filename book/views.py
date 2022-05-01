@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from book.forms import GuestBookForm
+from book.forms import GuestBookForm, GuestBookDeleteForm
 from book.models import GuestBook
 
 
@@ -42,3 +42,19 @@ def book_update(request, pk):
             guest_book.save()
             return redirect("index")
         return render(request, 'book_update.html', {'guest_book': guest_book, 'form': form})
+
+
+def book_delete(request, pk):
+    guest_book = GuestBook.objects.get(pk=pk)
+    if request.method == 'GET':
+        form = GuestBookDeleteForm()
+        return render(request, "book_delete.html", {'guest_book': guest_book, "form": form})
+    else:
+        form = GuestBookDeleteForm(data=request.POST)
+        if form.is_valid():
+            if form.cleaned_data.get("name") != guest_book.name:
+                form.errors['name'] = ["There is no such name"]
+                return render(request, "book_delete.html", {'guest_book': guest_book, "form": form})
+            guest_book.delete()
+            return redirect("index")
+        return render(request, "book_delete.html", {'guest_book': guest_book, "form": form})

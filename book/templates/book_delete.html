@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url "book_delete" guest_book.pk %}" method="POST">
+        {% csrf_token %}
+        <h2>
+            Are you sure, you want to delete the post: {{ guest_book.name }}?</h2>
+        {% include "partial/form.html" with button_text="Yes, delete!" %}
+    </form>
+    <br/>
+    <a class="btn btn-primary" href="{% url "index" %}" role="button">No!</a>
+{% endblock %}

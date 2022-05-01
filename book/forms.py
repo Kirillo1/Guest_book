@@ -11,3 +11,8 @@ class GuestBookForm(forms.Form):
                                 label="Your text",
                                 widget=forms.widgets.Textarea(attrs={"rows": 5, "cols": 20}),
                                 error_messages={"required": 'Enter data'})
+
+
+class GuestBookDeleteForm(forms.Form):
+    name = forms.CharField(max_length=30, required=True, label="Name",
+                           error_messages={"required": 'Enter data'})
